@@ -93,7 +93,7 @@ int main(int argc, char* argv[]) {
 
 	int i, j, k, r;
 
-	#pragma omp parallel for
+	#pragma omp parallel for private(i,j)
 	for(i = 0; i < N; i++) {
 		for(j = 0; j < N; j++) {
 			matrixA[i*N + j] = 2.0;
@@ -128,7 +128,7 @@ int main(int argc, char* argv[]) {
 		dgemm_(&transA, &transB, &N, &N, &N, &alpha, matrixA, &N,
 			matrixB, &N, &beta, matrixC, &N);
 #else
-		#pragma omp parallel for private(sum)
+		#pragma omp parallel for private(sum,j,k)
 		for(i = 0; i < N; i++) {
 			for(j = 0; j < N; j++) {
 				sum = 0;
@@ -158,7 +158,7 @@ int main(int argc, char* argv[]) {
 	double final_sum = 0;
 	long long int count     = 0;
 
-	#pragma omp parallel for reduction(+:final_sum, count)
+	#pragma omp parallel for reduction(+:final_sum, count) private(i,j)
 	for(i = 0; i < N; i++) {
 		for(j = 0; j < N; j++) {
 			final_sum += matrixC[i*N + j];
