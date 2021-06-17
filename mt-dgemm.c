@@ -128,7 +128,10 @@ int main(int argc, char* argv[]) {
 		dgemm_(&transA, &transB, &N, &N, &N, &alpha, matrixA, &N,
 			matrixB, &N, &beta, matrixC, &N);
 #else
-		#pragma omp parallel for private(sum,j,k)
+		//#pragma omp parallel for private(sum,j,k)
+		#pragma omp target data map(to:matrixA[0:N*N]), map(to:matrixB[0:N*N]), map(tofrom:matrixC[0:N*N])
+		#pragma omp target
+    	#pragma omp teams distribute parallel for collapse(2) private(i,j,k,sum)
 		for(i = 0; i < N; i++) {
 			for(j = 0; j < N; j++) {
 				sum = 0;
