@@ -59,11 +59,9 @@ inline cublasStatus_t checkCublas(cublasStatus_t result)
 // Fill the array A(nr_rows_A, nr_cols_A) with random numbers on CPU
 void CPU_fill_rand(float *A, int nr_rows_A, int nr_cols_A)
 {
-    int a = 1;
-
     for (int i = 0; i < nr_rows_A * nr_cols_A; i++)
     {
-        A[i] = (float)rand() / (float)(RAND_MAX / a);
+        A[i] = (float)rand() / (float)(RAND_MAX);
     }
 }
 int main(int argc, char **argv)
@@ -89,10 +87,9 @@ int main(int argc, char **argv)
     float *h_B = (float *)malloc(max_mkn * max_mkn * sizeof(float));
     float *h_C = (float *)malloc(max_mkn * max_mkn * sizeof(float));
 
-    //CPU_fill_rand(h_A, max_mkn, max_mkn);
-    //CPU_fill_rand(h_B, max_mkn, max_mkn);
-    //CPU_fill_rand(h_C, max_mkn, max_mkn);
-    //cout << "Filled host size memory" << endl;
+    CPU_fill_rand(h_A, max_mkn, max_mkn);
+    CPU_fill_rand(h_B, max_mkn, max_mkn);
+    CPU_fill_rand(h_C, max_mkn, max_mkn);
 
     __half *d_A, *d_B, *d_C;
     checkCuda(cudaMallocManaged((void **)&d_A, max_mkn * max_mkn * sizeof(__half)));
