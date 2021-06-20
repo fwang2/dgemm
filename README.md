@@ -1,5 +1,6 @@
-# dgemm
+# xGEMM
 
+A collection of GEMM benchmarks to verify Summit V100 and Frontier MI-100/MI-200 GPUs.
 
 
 ## using ROCM 
